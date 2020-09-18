@@ -24,7 +24,7 @@ resource "google_app_engine_application" "app" {
   count       = var.cloud_sql_backups_enabled ? length(local.sqlBackupSchedules) : 0
 
   project     = var.project_id
-  location_id = var.functions_region
+  location_id = var.app_engine_location_id
 }
 
 resource "google_cloud_scheduler_job" "cloud_sql_backup" {

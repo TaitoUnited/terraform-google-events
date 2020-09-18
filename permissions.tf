@@ -36,5 +36,5 @@ resource "google_storage_bucket_iam_member" "cloud_sql_backup" {
 
   bucket        = var.cloud_sql_backup_bucket
   role          = "roles/storage.legacyBucketWriter"
-  member        = data.google_sql_database_instance.database[count.index].service_account_email_address
+  member        = "serviceAccount:${data.google_sql_database_instance.database[count.index].service_account_email_address}"
 }

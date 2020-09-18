@@ -18,6 +18,11 @@ variable "project_id" {
   type        = string
 }
 
+variable "app_engine_location_id" {
+  type        = string
+  default     = "europe-west"
+}
+
 variable "cloud_build_notify_enabled" {
   type        = bool
   default     = true

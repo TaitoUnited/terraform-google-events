@@ -1,6 +1,6 @@
 const { google } = require("googleapis");
 const { auth } = require("google-auth-library");
-const sqladmin = google.sqladmin("v1beta4");
+const sqladmin = google.sqladmin;
 
 exports.main = async (event, context) => {
   const pubsubMessage = JSON.parse(
