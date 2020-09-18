@@ -15,8 +15,20 @@
  */
 
 locals {
+  postgresqlClusters = (
+    var.postgresql_clusters != null
+    ? var.postgresql_clusters
+    : []
+  )
+
+  mysqlClusters = (
+    var.mysql_clusters != null
+    ? var.mysql_clusters
+    : []
+  )
+
   postgresqlBackupSchedules = flatten([
-    for db in concat(var.postgresql_clusters):
+    for db in concat(local.postgresqlClusters):
     db.storageBackupSchedule == "" ? [ ] : [
       {
         project = var.project_id
@@ -30,7 +42,7 @@ locals {
   ])
 
   mysqlBackupSchedules = flatten([
-    for db in concat(var.mysql_clusters):
+    for db in concat(local.mysqlClusters):
     db.storageBackupSchedule == "" ? [ ] : [
       {
         project = var.project_id
