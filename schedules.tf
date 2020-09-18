@@ -19,7 +19,17 @@ resource "google_pubsub_topic" "cloud_sql_backup" {
   name     = "cloud-sql-backup"
 }
 
+# google_app_engine_application is required by google_cloud_scheduler_job
+resource "google_app_engine_application" "app" {
+  count       = var.cloud_sql_backups_enabled ? length(local.sqlBackupSchedules) : 0
+
+  project     = var.project_id
+  location_id = var.functions_region
+}
+
 resource "google_cloud_scheduler_job" "cloud_sql_backup" {
+  depends_on = [ google_app_engine_application.app ]
+
   count    = var.cloud_sql_backups_enabled ? length(local.sqlBackupSchedules) : 0
   name     = "cloud-sql-backup-${local.sqlBackupSchedules[count.index].instance}"
   schedule = local.sqlBackupSchedules[count.index].schedule
