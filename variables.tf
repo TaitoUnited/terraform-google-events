@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+variable "project_id" {
+  type        = string
+}
+
 variable "cloud_build_notify_enabled" {
   type        = bool
   default     = true

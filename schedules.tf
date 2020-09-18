@@ -21,12 +21,12 @@ resource "google_pubsub_topic" "cloud_sql_backup" {
 
 resource "google_cloud_scheduler_job" "cloud_sql_backup" {
   count    = var.cloud_sql_backups_enabled ? length(local.sqlBackupSchedules) : 0
-  name     = "cloud-sql-backup-${local.sqlBackupSchedules[count.index].name}"
+  name     = "cloud-sql-backup-${local.sqlBackupSchedules[count.index].instance}"
   schedule = local.sqlBackupSchedules[count.index].schedule
   region   = var.functions_region
 
   pubsub_target {
-    topic_name = "projects/${data.google_project.project.project_id}/topics/${google_pubsub_topic.cloud_sql_backup[0].name}"
+    topic_name = "projects/${var.project_id}/topics/${google_pubsub_topic.cloud_sql_backup[0].name}"
     data = base64encode(jsonencode(local.sqlBackupSchedules[count.index]))
   }
 }

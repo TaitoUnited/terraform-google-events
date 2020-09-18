@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-data "google_project" "project" {
-}
-
 locals {
   postgresqlBackupSchedules = flatten([
     for db in concat(var.postgresql_clusters):
     db.storageBackupSchedule == "" ? [ ] : [
       {
-        project = data.google_project.project.project_id
+        project = var.project_id
         instance = db.name
         type = "postgresql"
         schedule = db.storageBackupSchedule
@@ -36,7 +33,7 @@ locals {
     for db in concat(var.mysql_clusters):
     db.storageBackupSchedule == "" ? [ ] : [
       {
-        project = data.google_project.project.project_id
+        project = var.project_id
         instance = db.name
         type = "mysql"
         schedule = db.storageBackupSchedule

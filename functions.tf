@@ -49,7 +49,7 @@ resource "google_cloudfunctions_function" "cloud_build_notify" {
   runtime               = "nodejs12"
   available_memory_mb   = 128
 
-  project               = data.google_project.project.project_id
+  project               = var.project_id
   region                = var.functions_region
   source_archive_bucket = var.functions_bucket
   source_archive_object = "events/cloud-build-notify.zip"
@@ -57,7 +57,7 @@ resource "google_cloudfunctions_function" "cloud_build_notify" {
   entry_point           = "main"
   event_trigger {
     event_type = "google.pubsub.topic.publish"
-    resource   = "projects/${data.google_project.project.project_id}/topics/cloud-builds"
+    resource   = "projects/${var.project_id}/topics/cloud-builds"
     failure_policy {
       retry = false
     }
@@ -76,7 +76,7 @@ resource "google_cloudfunctions_function" "cloud_sql_backup" {
   runtime               = "nodejs12"
   available_memory_mb   = 128
 
-  project               = data.google_project.project.project_id
+  project               = var.project_id
   region                = var.functions_region
   source_archive_bucket = var.functions_bucket
   source_archive_object = "events/cloud-sql-backup.zip"
@@ -86,7 +86,7 @@ resource "google_cloudfunctions_function" "cloud_sql_backup" {
   entry_point           = "main"
   event_trigger {
     event_type = "google.pubsub.topic.publish"
-    resource   = "projects/${data.google_project.project.project_id}/topics/${google_pubsub_topic.cloud_sql_backup[0].name}"
+    resource   = "projects/${var.project_id}/topics/${google_pubsub_topic.cloud_sql_backup[0].name}"
     failure_policy {
       retry = false
     }
