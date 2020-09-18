@@ -1,0 +1,9 @@
+{
+  "name": "cloud-sql-backup",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "googleapis": "^59.0.0",
+    "google-auth-library": "6.0.6"
+  }
+}

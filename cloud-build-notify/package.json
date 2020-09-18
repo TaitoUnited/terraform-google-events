@@ -1,0 +1,8 @@
+{
+  "name": "cloud-build-notify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@slack/client": "5.0.2"
+  }
+}
