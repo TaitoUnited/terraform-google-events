@@ -21,7 +21,7 @@ resource "google_pubsub_topic" "cloud_sql_backup" {
 
 # google_app_engine_application is required by google_cloud_scheduler_job
 resource "google_app_engine_application" "app" {
-  count       = var.cloud_sql_backups_enabled ? length(local.sqlBackupSchedules) : 0
+  count       = var.cloud_sql_backups_enabled ? 1 : 0
 
   project     = var.project_id
   location_id = var.app_engine_location_id

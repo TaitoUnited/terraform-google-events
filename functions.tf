@@ -29,17 +29,19 @@ data "archive_file" "cloud_sql_backup" {
 }
 
 resource "google_storage_bucket_object" "cloud_build_notify" {
+  depends_on  = [ data.archive_file.cloud_build_notify ]
   count       = var.cloud_build_notify_enabled ? 1 : 0
   bucket      = var.functions_bucket
   name        = "events/cloud-build-notify.zip"
-  source      = data.archive_file.cloud_build_notify[0].output_path
+  source      = "${path.module}/cloud-build-notify.zip"
 }
 
 resource "google_storage_bucket_object" "cloud_sql_backup" {
+  depends_on  = [ data.archive_file.cloud_sql_backup ]
   count       = var.cloud_sql_backups_enabled ? 1 : 0
   bucket      = var.functions_bucket
   name        = "events/cloud-sql-backup.zip"
-  source      = data.archive_file.cloud_sql_backup[0].output_path
+  source      = "${path.module}/cloud-sql-backup.zip"
 }
 
 resource "google_cloudfunctions_function" "cloud_build_notify" {
