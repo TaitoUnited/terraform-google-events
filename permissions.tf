@@ -27,14 +27,14 @@ resource "google_project_iam_member" "cloud_sql_backup" {
 }
 
 data "google_sql_database_instance" "database" {
-  count    = var.cloud_build_notify_enabled ? length(local.sqlBackupSchedules) : 0
-  name     = local.sqlBackupSchedules[count.index].instance
+  for_each = {for item in (var.cloud_build_notify_enabled ? local.sqlBackupSchedules : []): item.instance => item}
+  name     = each.value.instance
 }
 
 resource "google_storage_bucket_iam_member" "cloud_sql_backup" {
-  count = var.cloud_build_notify_enabled ? length(local.sqlBackupSchedules) : 0
+  for_each      = {for item in (var.cloud_build_notify_enabled ? local.sqlBackupSchedules : []): item.instance => item}
 
   bucket        = var.cloud_sql_backup_bucket
   role          = "roles/storage.legacyBucketWriter"
-  member        = "serviceAccount:${data.google_sql_database_instance.database[count.index].service_account_email_address}"
+  member        = "serviceAccount:${data.google_sql_database_instance.database[each.key].service_account_email_address}"
 }

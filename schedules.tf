@@ -30,13 +30,13 @@ resource "google_app_engine_application" "app" {
 resource "google_cloud_scheduler_job" "cloud_sql_backup" {
   depends_on = [ google_app_engine_application.app ]
 
-  count    = var.cloud_sql_backups_enabled ? length(local.sqlBackupSchedules) : 0
-  name     = "cloud-sql-backup-${local.sqlBackupSchedules[count.index].instance}"
-  schedule = local.sqlBackupSchedules[count.index].schedule
+  for_each = {for item in (var.cloud_sql_backups_enabled ? local.sqlBackupSchedules : []): item.instance => item}
+  name     = "cloud-sql-backup-${each.value.instance}"
+  schedule = each.value.schedule
   region   = var.functions_region
 
   pubsub_target {
     topic_name = "projects/${var.project_id}/topics/${google_pubsub_topic.cloud_sql_backup[0].name}"
-    data = base64encode(jsonencode(local.sqlBackupSchedules[count.index]))
+    data = base64encode(jsonencode(each.value))
   }
 }
