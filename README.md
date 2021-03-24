@@ -1,5 +1,7 @@
 # Google Cloud events
 
+> TODO: rename this module to "Google Cloud integrations"
+
 Provides some custom jobs and notifications for your infrastructure:
 
 - Cloud SQL long-term backups
@@ -41,7 +43,7 @@ resource "google_project_service" "sqladmin" {
 module "events" {
   source           = "TaitoUnited/events/google"
   version          = "1.0.0"
-  depends_on          = [
+  depends_on       = [
     google_project_service.compute,
     google_project_service.cloudfunctions,
     google_project_service.cloudscheduler,
@@ -85,7 +87,7 @@ Combine with the following modules to get a complete infrastructure defined by Y
 - [Databases](https://registry.terraform.io/modules/TaitoUnited/databases/google)
 - [Storage](https://registry.terraform.io/modules/TaitoUnited/storage/google)
 - [Monitoring](https://registry.terraform.io/modules/TaitoUnited/monitoring/google)
-- [Events](https://registry.terraform.io/modules/TaitoUnited/events/google)
+- [Integrations](https://registry.terraform.io/modules/TaitoUnited/integrations/google)
 - [PostgreSQL privileges](https://registry.terraform.io/modules/TaitoUnited/privileges/postgresql)
 - [MySQL privileges](https://registry.terraform.io/modules/TaitoUnited/privileges/mysql)
 
