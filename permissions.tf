@@ -24,6 +24,7 @@ resource "google_project_iam_member" "cloud_sql_backup" {
   count    = var.cloud_sql_backups_enabled ? 1 : 0
   member   = "serviceAccount:${google_service_account.cloud_sql_backup[0].email}"
   role     = "roles/cloudsql.client"
+  project  = var.project_id
 }
 
 data "google_sql_database_instance" "database" {
